@@ -14,7 +14,8 @@ library(naniar)
 #### Raw Data ####
 
 # C:N data
-cn <- readxl::read_excel(path = "data_raw/CHN_Field_all_years.xlsx", sheet = 1)
+# Note - this project also includes the raw Excel file, but there was one date (9/12/19) entered incorrectly, so this has been fixed manually and the file saved as a csv for import below.
+cn <- read_csv("data_raw/CHN_Field_all_years.csv")
 
 # SST datasets (3 need to be knitted together)
 sst1 <- read_csv("data_raw/LTER_sites_20000101_20190501.csv")
