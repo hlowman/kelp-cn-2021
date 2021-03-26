@@ -57,17 +57,17 @@ cn_sk <- kendallSeasonalTrendTest(logcn ~ MONTH + YEAR, data = cn_data)
 
 # View results
 cn_sk
-# Chi-Square (Het) = 9.6940, z (Trend) = 9.4716, df = 11
+# Chi-Square (Het) = 9.7155, z (Trend) = 9.4675, df = 11
 
 cn_sk$estimate
-#           tau          slope     intercept 
-#   0.255771520    0.009687592 -17.358607136 
+#           tau          slope      intercept 
+#   0.255779511    0.009707598  -17.471535315 
 # tau is the direction/magnitude of the trend (between -1 and 1)
 # slope is the rate of change in the interval
 
 cn_sk$p.value
 # Chi-Square (Het)        z (Trend) 
-# 5.581060e-01            2.755831e-21 
+# 5.561451e-01            2.865211e-21  
 # Heterogeneity p value is above 0.05, so there were no opposing trends in any season.
 # Trend p value falls well below 0.05, so there is a positive, monotonic trend in the C:N data.
 
@@ -96,17 +96,17 @@ c_sk <- kendallSeasonalTrendTest(c ~ MONTH + YEAR, data = c_data)
 
 # View results
 c_sk
-# Chi-Square (Het) = 11.8618, z (Trend) = 8.8983, df = 11
+# Chi-Square (Het) = 10.2149, z (Trend) = 9.0174, df = 11
 
 c_sk$estimate
 #           tau          slope     intercept 
-#     0.2439582      0.2723077  -574.1016439 
+#     0.2468106      0.2748313  -574.1016439 
 # tau is the direction/magnitude of the trend (between -1 and 1)
 # slope is the rate of change in the interval
 
 c_sk$p.value
 # Chi-Square (Het)        z (Trend) 
-# 3.741192e-01            5.670201e-19
+# 5.111686e-01            1.926636e-19
 # Heterogeneity p value is above 0.05, so there were no opposing trends in any season.
 # Trend p value falls well below 0.05, so there is a positive, monotonic trend in the C data.
 
@@ -135,21 +135,22 @@ n_sk <- kendallSeasonalTrendTest(n ~ MONTH + YEAR, data = n_data)
 
 # View results
 n_sk
-# Chi-Square (Het) = 20.8531, z (Trend) = -5.2932, df = 11
+# Chi-Square (Het) = 20.650, z (Trend) = -5.239, df = 11
 
 n_sk$estimate
 #           tau          slope     intercept 
-#    -0.1396852     -0.0240000    44.1444459 
+#   -0.13846400    -0.02388889   44.14444592 
 # tau is the direction/magnitude of the trend (between -1 and 1)
 # slope is the rate of change in the interval
 
 n_sk$p.value
 # Chi-Square (Het)        z (Trend) 
-# 3.492551e-02            1.202110e-07
-# Heterogeneity p value is below 0.05, so there are opposing trends in a season.
+# 3.718061e-02            1.614224e-07
+# Heterogeneity p value is below 0.05, so there ARE opposing trends in a season.
 # Trend p value falls well below 0.05, so there is a negative, monotonic trend in the N data.
 
 n_sk$seasonal.estimates
+# Appears that opposing season is April - is strong upwelling counteracting the overall upwards trend?
 
 # Let's examine each season with a non-seasonal test
 for(i in 1:12){
