@@ -451,9 +451,377 @@ anova(dfinal)
 ### ENSO ####
 
 # LMEM #5: C:N vs. ENSO
+# Examine data
+plot(logcn ~ enso, data = cn_oi) # There's a strange "bookend" pattern here that I'm not entirely sure how to address.
+hist(cn_oi$enso) # Normally distributed though...
+
+#### STEP 1: Create a linear regression and check residuals.
+# Based on boxplots & pairplots : 
+# Response variable - log(C:N)
+# Explanatory (fixed) variables - ENSO*Time (aka "sampling")
+e1 <- lm(logcn ~ enso*sampling, data = cn_oi) # Creates the initial linear model.
+
+re1 <- data.frame(rstandard(e1)) # Standard residuals
+# Because there's missing data, here's a workaround to compare residuals to data.
+re1 <- re1 %>%
+  rownames_to_column("record")
+re1_ed <- re1 %>%
+  mutate(rn = as.numeric(record))
+cn_oi_ed <- cn_oi %>%
+  mutate(RECORD = seq(1,666))
+cn_oi_res <- cn_oi_ed %>%
+  left_join(re1_ed, by = c("RECORD" = "rn"))
+
+ggplot(data = cn_oi_res, aes(x = enso, y = rstandard.e1.)) +
+  geom_point() +
+  labs(x = "ENSO", y = "Standardised residuals") # Plots said residuals.
+
+ggplot(data = cn_oi_res, aes(x = sampling, y = rstandard.e1.)) +
+  geom_point() +
+  labs(x = "Sampling Date", y = "Standardised residuals")
+
+#### STEP 2: Fit the lm() with GLS and compare to lme().
+e2 <- gls(logcn ~ enso*sampling, data = cn_oi_rmna) # Linear regression.
+e3 <- lme(logcn ~ enso*sampling, random =~1 | sitef, data = cn_oi_rmna) # First LMEM.
+anova(e2, e3) # Compares the two models. e2 preferred with AIC value of -528.1790, but going to keep in the random term to account for repeated sampling.
+
+# STEP 3: Decide on a variance structure (aka random terms).
+plot(e3, col=1) # Check the residuals.
+qqnorm(e3) # This looks pretty good.
+
+# STEP 4: Fit the lme().
+
+# Using e3 <- lme(logcn ~ enso*sampling, random =~1 | sitef, data = cn_oi_rmna)
+
+# STEP 5: Compare the lm() and lme().
+
+# See Step 2.
+
+# STEP 6: Everything ok? Check residuals.
+
+# See Step 3.
+
+# STEP 7/8: Step-wise Optimal Fixed Structure
+
+e3_ml <- lme(logcn ~ enso*sampling, 
+             random =~1 | sitef,
+             method = "ML", 
+             data = cn_oi_rmna)
+
+e4 <- lme(logcn ~ enso, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna) # Remove "sampling" as a fixed factor.
+
+e5 <- lme(logcn ~ sampling, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna) # Remove "enso" as a fixed factor.
+
+anova(e3_ml, e4, e5) # Compare the three models. e3_ml preferred with AIC value of -575.3458, so remove nothing.
+
+# STEP 9: Refit with REML
+
+efinal <- lme(logcn ~ enso*sampling, 
+              random =~1 | sitef,
+              method = "REML", 
+              data = cn_oi_rmna)
+
+# Output of the model.
+summary(efinal)
+# Checking residuals.
+plot(efinal, col=1) # No strong pattern.
+qqnorm(efinal) # Looks pretty good.
+# Final results.
+anova(efinal)
+
+# STEP 10: What does this mean in WORDS?
+
+# My model suggests there is a significant effect of the ENSO index on log(C:N) values of kelp tissue samples as well as a significant effect of sampling date on values; while the interactive effect is not significant, I have left the structure as such, because we know the two are related and AIC values suggest we do. Random intercepts by site were also included.
+
+# Equation: log(C:N) = 1.100 + 0.054[enso] - 0.0009[sampling] - 0.0002[enso:sampling] + random
+
+#### MJO ####
 
 # LMEM #6: C:N vs. MJO
+# Examine data
+plot(logcn ~ mjo, data = cn_oi)
+hist(cn_oi$mjo)
+
+#### STEP 1: Create a linear regression and check residuals.
+# Based on boxplots & pairplots : 
+# Response variable - log(C:N)
+# Explanatory (fixed) variables - MJO*Time (aka "sampling")
+f1 <- lm(logcn ~ mjo*sampling, data = cn_oi) # Creates the initial linear model.
+
+rf1 <- data.frame(rstandard(f1)) # Standard residuals
+# Because there's missing data, here's a workaround to compare residuals to data.
+rf1 <- rf1 %>%
+  rownames_to_column("record")
+rf1_ed <- rf1 %>%
+  mutate(rn = as.numeric(record))
+cn_oi_ed <- cn_oi %>%
+  mutate(RECORD = seq(1,666))
+cn_oi_res <- cn_oi_ed %>%
+  left_join(rf1_ed, by = c("RECORD" = "rn"))
+
+ggplot(data = cn_oi_res, aes(x = mjo, y = rstandard.f1.)) +
+  geom_point() +
+  labs(x = "MJO", y = "Standardised residuals") # Plots said residuals.
+
+ggplot(data = cn_oi_res, aes(x = sampling, y = rstandard.f1.)) +
+  geom_point() +
+  labs(x = "Sampling Date", y = "Standardised residuals")
+
+#### STEP 2: Fit the lm() with GLS and compare to lme().
+f2 <- gls(logcn ~ mjo*sampling, data = cn_oi_rmna) # Linear regression.
+f3 <- lme(logcn ~ mjo*sampling, random =~1 | sitef, data = cn_oi_rmna) # First LMEM.
+anova(f2, f3) # Compares the two models. f2 preferred with AIC value of -507.6330, but going to keep in the random term to account for repeated sampling.
+
+# STEP 3: Decide on a variance structure (aka random terms).
+plot(f3, col=1) # Check the residuals.
+qqnorm(f3) # This looks pretty good.
+
+# STEP 4: Fit the lme().
+
+# Using f3 <- lme(logcn ~ mjo*sampling, random =~1 | sitef, data = cn_oi_rmna)
+
+# STEP 5: Compare the lm() and lme().
+
+# See Step 2.
+
+# STEP 6: Everything ok? Check residuals.
+
+# See Step 3.
+
+# STEP 7/8: Step-wise Optimal Fixed Structure
+
+f3_ml <- lme(logcn ~ mjo*sampling, 
+             random =~1 | sitef,
+             method = "ML", 
+             data = cn_oi_rmna)
+
+f4 <- lme(logcn ~ mjo, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna) # Remove "sampling" as a fixed factor.
+
+f5 <- lme(logcn ~ sampling, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna) # Remove "mjo" as a fixed factor.
+
+anova(f3_ml, f4, f5) # Compare the three models. f3_ml preferred with AIC value of -553.5275 (but *just* barely), so remove nothing.
+
+# STEP 9: Refit with REML
+
+ffinal <- lme(logcn ~ mjo*sampling, 
+              random =~1 | sitef,
+              method = "REML", 
+              data = cn_oi_rmna)
+
+# Output of the model.
+summary(ffinal)
+# Checking residuals.
+plot(ffinal, col=1) # No strong pattern.
+qqnorm(ffinal) # Looks pretty good.
+# Final results.
+anova(ffinal)
+
+# STEP 10: What does this mean in WORDS?
+
+# My model suggests there is  a significant effect of sampling date on log(C:N) values of giant kelp tissue, but the MJO index is not a significant predictor of these values; while the interactive effect is also not significant, I have left the structure as such, because we know the two are related and AIC values suggest we do. Random intercepts by site were also included.
+
+# Equation: log(C:N) = 1.09 + 0.03[mjo] + 0.0009[sampling] - 0.0003[mjo:sampling] + random
+
+#### NPGO ####
 
 # LMEM #7: C:N vs. NPGO
+# Examine data
+plot(logcn ~ npgo, data = cn_oi)
+hist(cn_oi$npgo)
+
+#### STEP 1: Create a linear regression and check residuals.
+# Based on boxplots & pairplots : 
+# Response variable - log(C:N)
+# Explanatory (fixed) variables - NPGO*Time (aka "sampling")
+g1 <- lm(logcn ~ npgo*sampling, data = cn_oi) # Creates the initial linear model.
+
+rg1 <- data.frame(rstandard(g1)) # Standard residuals
+# Because there's missing data, here's a workaround to compare residuals to data.
+rg1 <- rg1 %>%
+  rownames_to_column("record")
+rg1_ed <- rg1 %>%
+  mutate(rn = as.numeric(record))
+cn_oi_ed <- cn_oi %>%
+  mutate(RECORD = seq(1,666))
+cn_oi_res <- cn_oi_ed %>%
+  left_join(rg1_ed, by = c("RECORD" = "rn"))
+
+ggplot(data = cn_oi_res, aes(x = npgo, y = rstandard.g1.)) +
+  geom_point() +
+  labs(x = "NPGO", y = "Standardised residuals") # Plots said residuals.
+
+ggplot(data = cn_oi_res, aes(x = sampling, y = rstandard.g1.)) +
+  geom_point() +
+  labs(x = "Sampling Date", y = "Standardised residuals")
+
+#### STEP 2: Fit the lm() with GLS and compare to lme().
+# Only have NPGO values through July 2020, so need to create a dataset accomodating that.
+cn_oi_rmna2 <- cn_oi_rmna %>%
+  drop_na(npgo)
+g2 <- gls(logcn ~ npgo*sampling, data = cn_oi_rmna2) # Linear regression.
+g3 <- lme(logcn ~ npgo*sampling, random =~1 | sitef, data = cn_oi_rmna2) # First LMEM.
+anova(g2, g3) # Compares the two models. g2 preferred with AIC value of -491.5951, but going to keep in the random term to account for repeated sampling.
+
+# STEP 3: Decide on a variance structure (aka random terms).
+plot(g3, col=1) # Check the residuals.
+qqnorm(g3) # This looks pretty good.
+
+# STEP 4: Fit the lme().
+
+# Using g3 <- lme(logcn ~ npgo*sampling, random =~1 | sitef, data = cn_oi_rmna2)
+
+# STEP 5: Compare the lm() and lme().
+
+# See Step 2.
+
+# STEP 6: Everything ok? Check residuals.
+
+# See Step 3.
+
+# STEP 7/8: Step-wise Optimal Fixed Structure
+
+g3_ml <- lme(logcn ~ npgo*sampling, 
+             random =~1 | sitef,
+             method = "ML", 
+             data = cn_oi_rmna2)
+
+g4 <- lme(logcn ~ npgo, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna2) # Remove "sampling" as a fixed factor.
+
+g5 <- lme(logcn ~ sampling, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna2) # Remove "npgo" as a fixed factor.
+
+anova(g3_ml, g4, g5) # Compare the three models. g3_ml preferred with AIC value of -539.9492, so remove nothing.
+
+# STEP 9: Refit with REML
+
+gfinal <- lme(logcn ~ npgo*sampling, 
+              random =~1 | sitef,
+              method = "REML", 
+              data = cn_oi_rmna2)
+
+# Output of the model.
+summary(gfinal)
+# Checking residuals.
+plot(gfinal, col=1) # No strong pattern.
+qqnorm(gfinal) # Looks pretty good.
+# Final results.
+anova(gfinal)
+
+# STEP 10: What does this mean in WORDS?
+
+# My model suggests there is a significant effect of both the NPGO index and sampling date on log(C:N) values of giant kelp tissue; while the interactive effect is not significant, I have left the structure as such, because we know the two are related and AIC values suggest we do. Random intercepts by site were also included.
+
+# Equation: log(C:N) = 1.10 - 0.036[npgo] + 0.0009[sampling] + 0.0002[npgo:sampling] + random
+
+#### PDO ####
 
 # LMEM #8: C:N vs. PDO
+
+# Examine data
+plot(logcn ~ PDO, data = cn_oi)
+hist(cn_oi$PDO)
+
+#### STEP 1: Create a linear regression and check residuals.
+# Based on boxplots & pairplots : 
+# Response variable - log(C:N)
+# Explanatory (fixed) variables - PDO*Time (aka "sampling")
+h1 <- lm(logcn ~ PDO*sampling, data = cn_oi) # Creates the initial linear model.
+
+rh1 <- data.frame(rstandard(h1)) # Standard residuals
+# Because there's missing data, here's a workaround to compare residuals to data.
+rh1 <- rh1 %>%
+  rownames_to_column("record")
+rh1_ed <- rh1 %>%
+  mutate(rn = as.numeric(record))
+cn_oi_ed <- cn_oi %>%
+  mutate(RECORD = seq(1,666))
+cn_oi_res <- cn_oi_ed %>%
+  left_join(rh1_ed, by = c("RECORD" = "rn"))
+
+ggplot(data = cn_oi_res, aes(x = PDO, y = rstandard.h1.)) +
+  geom_point() +
+  labs(x = "PDO", y = "Standardised residuals") # Plots said residuals.
+
+ggplot(data = cn_oi_res, aes(x = sampling, y = rstandard.h1.)) +
+  geom_point() +
+  labs(x = "Sampling Date", y = "Standardised residuals")
+
+#### STEP 2: Fit the lm() with GLS and compare to lme().
+h2 <- gls(logcn ~ PDO*sampling, data = cn_oi_rmna) # Linear regression.
+h3 <- lme(logcn ~ PDO*sampling, random =~1 | sitef, data = cn_oi_rmna) # First LMEM.
+anova(h2, h3) # Compares the two models. h2 preferred with AIC value of -505.5187, but going to keep in the random term to account for repeated sampling.
+
+# STEP 3: Decide on a variance structure (aka random terms).
+plot(h3, col=1) # Check the residuals.
+qqnorm(h3) # This looks pretty good.
+
+# STEP 4: Fit the lme().
+
+# Using h3 <- lme(logcn ~ PDO*sampling, random =~1 | sitef, data = cn_oi_rmna)
+
+# STEP 5: Compare the lm() and lme().
+
+# See Step 2.
+
+# STEP 6: Everything ok? Check residuals.
+
+# See Step 3.
+
+# STEP 7/8: Step-wise Optimal Fixed Structure
+
+h3_ml <- lme(logcn ~ PDO*sampling, 
+             random =~1 | sitef,
+             method = "ML", 
+             data = cn_oi_rmna)
+
+h4 <- lme(logcn ~ PDO, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna) # Remove "sampling" as a fixed factor.
+
+h5 <- lme(logcn ~ sampling, 
+          random =~1 | sitef,
+          method = "ML", 
+          data = cn_oi_rmna) # Remove "PDO" as a fixed factor.
+
+anova(h3_ml, h4, h5) # Compare the three models. h3_ml preferred with AIC value of -553.1967 (but again *just* barely), so remove nothing.
+
+# STEP 9: Refit with REML
+
+hfinal <- lme(logcn ~ PDO*sampling, 
+              random =~1 | sitef,
+              method = "REML", 
+              data = cn_oi_rmna)
+
+# Output of the model.
+summary(hfinal)
+# Checking residuals.
+plot(hfinal, col=1) # No strong pattern.
+qqnorm(hfinal) # Looks pretty good.
+# Final results.
+anova(hfinal)
+
+# STEP 10: What does this mean in WORDS?
+
+# My model suggests there is a significant effect of the interaction between the PDO index and sampling date on log(C:N) values of giant kelp tissue, but not a significant effect of the index alone. Random intercepts by site were also included.
+
+# Equation: log(C:N) = 1.08 - 0.024[pdo] + 0.001[sampling] + 0.0002[pdo:sampling] + random
+
+# End of script.
