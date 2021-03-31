@@ -209,9 +209,9 @@ table_1 <- tbl1 %>%
 table_1
 
 # Save out table
-gtsave(table_1,
-       "table_1.png",
-       path = "/Users/heilil/Desktop/R_figures/Kelp_CN") 
+# gtsave(table_1,
+#        "table_1.png",
+#        path = "/Users/heilil/Desktop/R_Figures/Kelp_CN") 
 
 # Table 2
 month <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -237,7 +237,7 @@ tbl2 <- data.frame(month, tau_cn, slope_cn, int_cn, z_cn, p_cn,
                    tau_c, slope_c, int_c, z_c, p_c,
                    tau_n, slope_n, int_n, z_n, p_n)
 
-# Build Table 1 with Seasonal Kendall test results.
+# Build Table 2 with Seasonal Kendall test results.
 table_2 <- tbl2 %>%
   gt(rowname_col = "month") %>% # Base table creation.
   tab_spanner(label = "log(C:N)",
@@ -260,7 +260,7 @@ table_2 <- tbl2 %>%
              slope_n = "slope",
              int_n = "intercept",
              z_n = "z",
-             p_n = "p (z)",) %>% # Change column names.
+             p_n = "p (z)") %>% # Change column names.
   cols_align(align = c("center"),
              columns = everything()) %>% # Center the table.
   fmt_number(columns = c(2:5,7:10, 12:15), decimals = 4) # Limit sig figs.
@@ -268,8 +268,7 @@ table_2 <- tbl2 %>%
 table_2
 
 # Save out table.
-gtsave(table_2,
-       "table_2.png",
-       path = "/Users/heilil/Desktop/R_figures/Kelp_CN") 
+# Used the "export" function from the viewer pane since it was so large.
+# Another helpful site for reference: https://www.epa.gov/sites/production/files/2016-05/documents/tech_notes_6_dec2013_trend.pdf
 
 # End of script.
