@@ -196,6 +196,9 @@ z_p <- c(2.8652e-21, 1.9266e-19, 1.6142e-07) # Note: I limited the number of sig
 
 tbl1 <- data.frame(param, tau, slope, intercept, df, chi_squared, chi_p, z, z_p)
 
+# Export dataframe
+# write_csv(tbl1, "data_analyses/tbl1.csv")
+
 # Build Table 1 with Seasonal Kendall test results.
 table_1 <- tbl1 %>%
   gt(rowname_col = "param") %>% # Base table creation.
@@ -236,6 +239,9 @@ p_n <- c(0.031505, 0.42410, 0.58527, 0.6625, 0.82607, 0.22842, 0.00094532, 6.926
 tbl2 <- data.frame(month, tau_cn, slope_cn, int_cn, z_cn, p_cn,
                    tau_c, slope_c, int_c, z_c, p_c,
                    tau_n, slope_n, int_n, z_n, p_n)
+
+# Export dataframe
+write_csv(tbl2, "data_analyses/tbl2.csv")
 
 # Build Table 2 with Seasonal Kendall test results.
 table_2 <- tbl2 %>%
