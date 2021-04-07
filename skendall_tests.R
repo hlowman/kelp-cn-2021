@@ -241,7 +241,7 @@ tbl2 <- data.frame(month, tau_cn, slope_cn, int_cn, z_cn, p_cn,
                    tau_n, slope_n, int_n, z_n, p_n)
 
 # Export dataframe
-write_csv(tbl2, "data_analyses/tbl2.csv")
+# write_csv(tbl2, "data_analyses/tbl2.csv")
 
 # Build Table 2 with Seasonal Kendall test results.
 table_2 <- tbl2 %>%
