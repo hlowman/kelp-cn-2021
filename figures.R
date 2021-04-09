@@ -108,6 +108,7 @@ figure_2 <- ggplot(cn_fac, aes(x = Month, y = cn)) +
   scale_fill_manual(values = lake_pal) +
   labs(x = "Month",
        y = "C:N") +
+  ylim(0, 50) +
   theme_bw() +
   theme(text=element_text(family="Times New Roman", size = 20)) +
   theme(legend.position = "none")
