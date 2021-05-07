@@ -2,7 +2,7 @@
 # Heili Lowman
 # March 30, 2021
 
-# The following script will create Figures 1 & 2 for the manuscript.
+# The following script will create Figures 1, 2, & 3 for the manuscript.
 # All figures in the following sections have been exported to my desktop to circumvent any file size issues that could arise when pushing files to GitHub.
 
 #### Setup ####
@@ -12,6 +12,10 @@ library(tidyverse)
 library(lubridate)
 library(patchwork)
 library(calecopal)
+library(rstatix)
+library(ggpubr)
+library(ggthemes)
+library(gt)
 
 # Load datasets from "data_tidying.R".
 load("data_tidy/kelp_cn_data_clean.rda")
@@ -24,25 +28,25 @@ cn_ed <- cn_full %>%
   mutate(logCN = log10(cn))
 
 # Panel A (C:N)
-fig1a <- ggplot(cn_ed, aes(x = Date, y = cn, fill = SITE)) + 
-  geom_point(shape = 21) +
-  scale_fill_manual(values = c("black", "gray60", "white")) +
+fig1a <- ggplot(cn_ed, aes(x = Date, y = cn)) + 
+  geom_point() +
+  #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
   annotate('text', x = as.Date("2020-01-01"), y = 45, size = 8, label = "A", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "C:N") +
   theme_bw() +
-  theme(text=element_text(family="Times New Roman", size = 20)) +
-  theme(legend.title = element_blank(),
-        legend.background=element_rect(fill = alpha("white", 0.1)),
-        legend.position = c(0.11, 0.85))
+  theme(text=element_text(family="Times New Roman", size = 20)) #+
+  # theme(legend.title = element_blank(),
+  #       legend.background=element_rect(fill = alpha("white", 0.1)),
+  #       legend.position = c(0.11, 0.85))
 
 fig1a
 
 # Panel B (log(C:N))
 fig1b <- ggplot(cn_ed, aes(x = Date, y = logCN, fill = SITE)) + 
-  geom_point(shape = 21) +
-  scale_fill_manual(values = c("black", "gray60", "white")) +
+  geom_point() +
+  #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
   annotate('text', x = as.Date("2004-01-01"), y = 1.6, size = 8, label = "B", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
@@ -55,8 +59,8 @@ fig1b
 
 # Panel C (C)
 fig1c <- ggplot(cn_ed, aes(x = Date, y = c, fill = SITE)) + 
-  geom_point(shape = 21) +
-  scale_fill_manual(values = c("black", "gray60", "white")) +
+  geom_point() +
+  #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
   annotate('text', x = as.Date("2020-01-01"), y = 42.5, size = 8, label = "C", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
@@ -69,8 +73,8 @@ fig1c
 
 # Panel D (N)
 fig1d <- ggplot(cn_ed, aes(x = Date, y = n, fill = SITE)) + 
-  geom_point(shape = 21) +
-  scale_fill_manual(values = c("black", "gray60", "white")) +
+  geom_point() +
+  #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
   annotate('text', x = as.Date("2020-01-01"), y = 4, size = 8, label = "D", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
@@ -103,6 +107,34 @@ cn_fac <- cn_ed %>%
 # Make color palette
 lake_pal <- cal_palette(name = "lake", n = 12, type = "continuous")
 
+cn_count <- cn_fac %>%
+  group_by(Month) %>% # group by month
+  filter(!is.na(cn)) %>% # remove NAs in cn column
+  summarize(n = n()) %>% # count remaining observations
+  ungroup() %>% # and always ungroup!!
+  mutate(method = "n") %>% # create new column
+  group_by(method) %>% # group by month
+  pivot_wider(names_from = Month, values_from = n) %>% # pivot for width
+  ungroup() # and always ungroup!!
+
+# counts <- ggsummarytable(
+#   cn_count, x = "Month", y = "n",
+#   font.family = "Times New Roman",
+#   ggtheme = theme_pubr() ) +
+#   theme(axis.title.x = element_blank(), # remove x title
+#         axis.text.x = element_blank(), # remove x labels
+#         axis.ticks = element_blank(), # remove all ticks
+#         axis.line = element_blank()) # remove all lines
+
+# counts_tbl <- cn_count %>%
+#   gt() %>%
+#   tab_options(table.font.names = "Times New Roman",
+#               column_labels.hidden = TRUE,
+#               table_body.border.top.color = "transparent",
+#               table_body.border.bottom.color = "transparent")
+# 
+# counts_tbl
+
 figure_2 <- ggplot(cn_fac, aes(x = Month, y = cn)) + 
   geom_boxplot(aes(fill = Month), alpha = 0.9) +
   scale_fill_manual(values = lake_pal) +
@@ -114,6 +146,10 @@ figure_2 <- ggplot(cn_fac, aes(x = Month, y = cn)) +
   theme(legend.position = "none")
 
 figure_2
+
+#fig2_full <- figure_2 / counts_tbl
+
+#fig2_full
 
 # ggsave(("Figure_2.png"),
 #        path = "/Users/heililowman/Desktop/R_Figures/Kelp_CN",

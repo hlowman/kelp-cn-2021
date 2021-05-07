@@ -41,7 +41,7 @@ mean_cn_start <- mean(cn_12mo$cn, na.rm = TRUE) # calculate mean of C:N
 # 12.71
 mean_logcn_start <- mean(cn_12mo$logcn, na.rm = TRUE) # calculate mean of log(C:N)
 # 1.08
-slope_logcn <- 0.0097
+slope_logcn <- 0.0097 # using slope from Table 1 seasonal Kendall test results
 final_logcn <- mean_logcn_start + (slope_logcn*19)
 # 1.26
 final_cn <- 10^(final_logcn)
@@ -54,7 +54,7 @@ yearly_delta_cn <- (final_cn - mean_cn_start)/19
 # Mean %c for the first 12 months of the dataset
 mean_c_start <- mean(cn_12mo$c, na.rm = TRUE) # calculate mean of %C
 # 28.39
-slope_c <- 0.27
+slope_c <- 0.27 # using slope from Table 1 seasonal Kendall test results
 final_c <- mean_c_start + (slope_c*19)
 # 33.52
 delta_c <- (final_c - mean_c_start)/mean_c_start
@@ -63,7 +63,7 @@ delta_c <- (final_c - mean_c_start)/mean_c_start
 # Mean %n for the first 12 months of the dataset
 mean_n_start <- mean(cn_12mo$n, na.rm = TRUE) # calculate mean of %C
 # 2.48
-slope_n <- -0.024
+slope_n <- -0.024 # using slope from Table 1 seasonal Kendall test results
 final_n <- mean_n_start + (slope_n*19)
 # 2.02
 delta_n <- (final_n - mean_n_start)/mean_n_start
