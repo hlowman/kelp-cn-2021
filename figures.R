@@ -32,7 +32,7 @@ fig1a <- ggplot(cn_ed, aes(x = Date, y = cn)) +
   geom_point() +
   #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2020-01-01"), y = 45, size = 8, label = "A", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 45, size = 8, label = "a", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "C:N") +
   theme_bw() +
@@ -48,7 +48,7 @@ fig1b <- ggplot(cn_ed, aes(x = Date, y = logCN, fill = SITE)) +
   geom_point() +
   #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2004-01-01"), y = 1.6, size = 8, label = "B", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 1.6, size = 8, label = "b", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "log(C:N)") +
   theme_bw() +
@@ -62,7 +62,7 @@ fig1c <- ggplot(cn_ed, aes(x = Date, y = c, fill = SITE)) +
   geom_point() +
   #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2020-01-01"), y = 42.5, size = 8, label = "C", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 42.5, size = 8, label = "c", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "% C") +
   theme_bw() +
@@ -76,7 +76,7 @@ fig1d <- ggplot(cn_ed, aes(x = Date, y = n, fill = SITE)) +
   geom_point() +
   #scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2020-01-01"), y = 4, size = 8, label = "D", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 4, size = 8, label = "d", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "% N") +
   theme_bw() +
@@ -177,7 +177,7 @@ cn_sst_oi <- cn_sst %>%
 # Panel A (SST)
 fig3a <- ggplot(cn_sst_oi , aes(x = temp_C_m, y = logCN)) + 
   geom_point() +
-  annotate('text', x = 21.5, y = 1.6, size = 8, label = "A", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 21.5, y = 1.6, size = 8, label = "a", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Sea Surface Temperature\n(ºCelsius)",
        y = "log(C:N)") +
   theme_bw() +
@@ -188,7 +188,7 @@ fig3a
 # Panel B (Bakun)
 fig3b <- ggplot(cn_sst_oi , aes(x = bakun, y = logCN)) + 
   geom_point() +
-  annotate('text', x = 390, y = 1.6, size = 8, label = "B", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 390, y = 1.6, size = 8, label = "b", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Bakun index",
        y = "log(C:N)") +
   theme_bw() +
@@ -199,7 +199,7 @@ fig3b
 # Panel C (BEUTI)
 fig3c <- ggplot(cn_sst_oi , aes(x = beuti, y = logCN)) + 
   geom_point() +
-  annotate('text', x = 14, y = 1.6, size = 8, label = "C", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 14, y = 1.6, size = 8, label = "c", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "BEUTI",
        y = "log(C:N)") +
   theme_bw() +
@@ -210,7 +210,7 @@ fig3c
 # Panel D (CUTI)
 fig3d <- ggplot(cn_sst_oi , aes(x = `34N_CUTI`, y = logCN)) + 
   geom_point() +
-  annotate('text', x = 1.25, y = 1.6, size = 8, label = "D", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 1.25, y = 1.6, size = 8, label = "d", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "CUTI",
        y = "log(C:N)") +
   theme_bw() +
@@ -221,7 +221,7 @@ fig3d
 # Panel E (ENSO)
 fig3e <- ggplot(cn_sst_oi , aes(x = enso, y = logCN)) + 
   geom_point() +
-  annotate('text', x = 1.75, y = 1.6, size = 8, label = "E", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 1.75, y = 1.6, size = 8, label = "e", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "ENSO index",
        y = "log(C:N)") +
   theme_bw() +
@@ -232,7 +232,7 @@ fig3e
 # Panel F (MJO)
 fig3f <- ggplot(cn_sst_oi , aes(x = mjo, y = logCN)) + 
   geom_point(color = "gray60") +
-  annotate('text', x = 1.25, y = 1.6, size = 8, label = "F", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 1.25, y = 1.6, size = 8, label = "f", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "MJO index",
        y = "log(C:N)") +
   theme_bw() +
@@ -243,7 +243,7 @@ fig3f
 # Panel G (NPGO)
 fig3g <- ggplot(cn_sst_oi , aes(x = npgo, y = logCN)) + 
   geom_point() +
-  annotate('text', x = 2, y = 1.6, size = 8, label = "G", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 2, y = 1.6, size = 8, label = "g", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "NPGO index",
        y = "log(C:N)") +
   theme_bw() +
@@ -254,7 +254,7 @@ fig3g
 # Panel H (PDO)
 fig3h <- ggplot(cn_sst_oi , aes(x = PDO, y = logCN)) + 
   geom_point(color = "gray60") +
-  annotate('text', x = 1.6, y = 1.6, size = 8, label = "H", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = 1.6, y = 1.6, size = 8, label = "h", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "PDO index",
        y = "log(C:N)") +
   theme_bw() +
