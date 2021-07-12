@@ -1,7 +1,7 @@
 # kelp-cn-2021
 Repository containing data and scripts for the following manuscript:
 
-Lowman, H.E., K.A. Emery, J.E. Dugan, R.J. Miller. Nutritional Quality of Giant Kelp Declines Due to Warming Ocean Temperatures.
+*Lowman, H.E., K.A. Emery, J.E. Dugan, R.J. Miller. Nutritional Quality of Giant Kelp Declines Due to Warming Ocean Temperatures.*
 
 All nutritional data can be downloaded from the Santa Barbara Coastal Long Term Ecological Research Program's data portal here:
 https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.24
@@ -18,4 +18,4 @@ The "figures.R" script includes all the code necessary to generate the figures i
 
 The "additional_calcs.R" script includes any additional calculations used as a part of the results in the manuscript.
 
-For additional support or information regarding this project, please contact Heili at hlowman *at* unr.edu.
+For additional support or information regarding this project, please contact Heili at hlowman *at* unr.edu or Kyle at emery *at* ucsb.edu ; more information is also available on the Santa Barbara Coastal Long Term Ecological Research project's website here: https://sbclter.msi.ucsb.edu/
