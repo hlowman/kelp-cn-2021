@@ -4,7 +4,7 @@
 
 # The following script will run a series of linear mixed effects models to examine for relationships between oceanographic indices and C:N values. These are an update from previously run linear models with sampling site and date in as a random effect to account for repeated sampling design and non-independent samples.
 
-# Model creation begins with fixed effects and random effects using a random intercept structure. Then, model selection follows the protocol outlined by Zuur et al. (2009, Chapter 5), beginning with a linear model, accounting for variance structure, optimizing the fixed structure, and validating best model fit using distribution of residuals and AIC values. All 24 of the below models follow the same format.
+# Model creation begins with fixed effects and random effects using a random intercept structure. Then, model selection follows the protocol outlined by Zuur et al. (2009, Chapter 5), beginning with a linear model, accounting for variance structure, optimizing the fixed structure, and validating best model fit using distribution of residuals and AIC values. All 8 of the below models follow the same format.
 
 #### Setup ####
 
@@ -17,6 +17,7 @@ library(multcomp)
 library(emmeans)
 library(GGally)
 library(groupdata2)
+library(MuMIn)
 
 # Load datasets from "data_tidying.R".
 load("data_tidy/kelp_cn_data_clean.rda")
@@ -128,7 +129,7 @@ a5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_sst_rmna) # Remove "temp_C_m" as a fixed factor.
 
-anova(a3_ml, a4, a5) # Compare the three models. a3_ml preferred with AIC value of -821.3963, so remove nothing.
+anova(a3_ml, a4, a5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -146,6 +147,7 @@ qqnorm(afinal) # Looks pretty good.
 
 # Final results.
 anova(afinal)
+r.squaredGLMM(afinal)
 
 # STEP 10: What does this mean in WORDS?
 
@@ -228,7 +230,7 @@ b5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_oi_rmna) # Remove "bakun" as a fixed factor.
 
-anova(b3_ml, b4, b5) # Compare the three models. b3_ml preferred with AIC value of -573.0749, so remove nothing.
+anova(b3_ml, b4, b5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -244,6 +246,7 @@ plot(bfinal, col=1) # No pattern.
 qqnorm(bfinal) # Looks pretty good.
 # Final results.
 anova(bfinal)
+r.squaredGLMM(bfinal)
 
 # STEP 10: What does this mean in WORDS?
 
@@ -329,7 +332,7 @@ c5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_oi_rmna) # Remove "beuti" as a fixed factor.
 
-anova(c3_ml, c4, c5) # Compare the three models. c3_ml preferred with AIC value of -724.1865, so remove nothing.
+anova(c3_ml, c4, c5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -345,6 +348,7 @@ plot(cfinal, col=1) # No strong pattern.
 qqnorm(cfinal) # Looks pretty good.
 # Final results.
 anova(cfinal)
+r.squaredGLMM(cfinal)
 
 # STEP 10: What does this mean in WORDS?
 
@@ -425,7 +429,7 @@ d5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_oi_rmna) # Remove "cuti" as a fixed factor.
 
-anova(d3_ml, d4, d5) # Compare the three models. d3_ml preferred with AIC value of -587.4412, so remove nothing.
+anova(d3_ml, d4, d5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -441,6 +445,7 @@ plot(dfinal, col=1) # No strong pattern.
 qqnorm(dfinal) # Looks pretty good.
 # Final results.
 anova(dfinal)
+r.squaredGLMM(dfinal)
 
 # STEP 10: What does this mean in WORDS?
 
@@ -518,7 +523,7 @@ e5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_oi_rmna) # Remove "enso" as a fixed factor.
 
-anova(e3_ml, e4, e5) # Compare the three models. e3_ml preferred with AIC value of -575.3458, so remove nothing.
+anova(e3_ml, e4, e5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -534,6 +539,7 @@ plot(efinal, col=1) # No strong pattern.
 qqnorm(efinal) # Looks pretty good.
 # Final results.
 anova(efinal)
+r.squaredGLMM(efinal)
 
 # STEP 10: What does this mean in WORDS?
 
@@ -611,7 +617,7 @@ f5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_oi_rmna) # Remove "mjo" as a fixed factor.
 
-anova(f3_ml, f4, f5) # Compare the three models. f3_ml preferred with AIC value of -553.5275 (but *just* barely), so remove nothing.
+anova(f3_ml, f4, f5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -627,6 +633,7 @@ plot(ffinal, col=1) # No strong pattern.
 qqnorm(ffinal) # Looks pretty good.
 # Final results.
 anova(ffinal)
+r.squaredGLMM(ffinal)
 
 # STEP 10: What does this mean in WORDS?
 
@@ -707,7 +714,7 @@ g5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_oi_rmna2) # Remove "npgo" as a fixed factor.
 
-anova(g3_ml, g4, g5) # Compare the three models. g3_ml preferred with AIC value of -539.9492, so remove nothing.
+anova(g3_ml, g4, g5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -723,6 +730,7 @@ plot(gfinal, col=1) # No strong pattern.
 qqnorm(gfinal) # Looks pretty good.
 # Final results.
 anova(gfinal)
+r.squaredGLMM(gfinal)
 
 # STEP 10: What does this mean in WORDS?
 
@@ -801,7 +809,7 @@ h5 <- lme(logcn ~ sampling,
           method = "ML", 
           data = cn_oi_rmna) # Remove "PDO" as a fixed factor.
 
-anova(h3_ml, h4, h5) # Compare the three models. h3_ml preferred with AIC value of -553.1967 (but again *just* barely), so remove nothing.
+anova(h3_ml, h4, h5) # Compare the three models.
 
 # STEP 9: Refit with REML
 
@@ -817,6 +825,7 @@ plot(hfinal, col=1) # No strong pattern.
 qqnorm(hfinal) # Looks pretty good.
 # Final results.
 anova(hfinal)
+r.squaredGLMM(hfinal)
 
 # STEP 10: What does this mean in WORDS?
 
