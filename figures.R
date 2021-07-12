@@ -29,14 +29,15 @@ cn_ed <- cn_full %>%
 
 # Panel A (C:N)
 fig1a <- ggplot(cn_ed, aes(x = Date, y = cn)) + 
-  geom_point() +
-  #scale_fill_manual(values = c("black", "gray60", "white")) +
+  geom_point(shape = 21, aes(fill = SITE)) +
+  scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2004-01-01"), y = 45, size = 8, label = "a", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 45, size = 8, label = "A", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "C:N") +
   theme_bw() +
-  theme(text=element_text(family="Times New Roman", size = 20)) #+
+  theme(text=element_text(family="Times New Roman", size = 20)) +
+  theme(legend.position = "none")
   # theme(legend.title = element_blank(),
   #       legend.background=element_rect(fill = alpha("white", 0.1)),
   #       legend.position = c(0.11, 0.85))
@@ -44,25 +45,25 @@ fig1a <- ggplot(cn_ed, aes(x = Date, y = cn)) +
 fig1a
 
 # Panel B (log(C:N))
-fig1b <- ggplot(cn_ed, aes(x = Date, y = logCN, fill = SITE)) + 
-  geom_point() +
-  #scale_fill_manual(values = c("black", "gray60", "white")) +
+fig1b <- ggplot(cn_ed, aes(x = Date, y = logCN)) + 
+  geom_point(shape = 21, aes(fill = SITE)) +
+  scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2004-01-01"), y = 1.6, size = 8, label = "b", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 1.6, size = 8, label = "B", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "log(C:N)") +
   theme_bw() +
   theme(text=element_text(family="Times New Roman", size = 20)) +
-  theme(legend.position = "none")
+  theme(legend.position = "right")
 
 fig1b
 
 # Panel C (C)
-fig1c <- ggplot(cn_ed, aes(x = Date, y = c, fill = SITE)) + 
-  geom_point() +
-  #scale_fill_manual(values = c("black", "gray60", "white")) +
+fig1c <- ggplot(cn_ed, aes(x = Date, y = c)) + 
+  geom_point(shape = 21, aes(fill = SITE)) +
+  scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2004-01-01"), y = 42.5, size = 8, label = "c", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 42.5, size = 8, label = "C", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "% C") +
   theme_bw() +
@@ -72,11 +73,11 @@ fig1c <- ggplot(cn_ed, aes(x = Date, y = c, fill = SITE)) +
 fig1c
 
 # Panel D (N)
-fig1d <- ggplot(cn_ed, aes(x = Date, y = n, fill = SITE)) + 
-  geom_point() +
-  #scale_fill_manual(values = c("black", "gray60", "white")) +
+fig1d <- ggplot(cn_ed, aes(x = Date, y = n)) + 
+  geom_point(shape = 21, aes(fill = SITE)) +
+  scale_fill_manual(values = c("black", "gray60", "white")) +
   scale_x_date(breaks = seq(as.Date("2005-01-01"), as.Date("2020-01-01"), by="5 years"), date_labels = "%Y") +
-  annotate('text', x = as.Date("2004-01-01"), y = 4, size = 8, label = "d", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
+  annotate('text', x = as.Date("2004-01-01"), y = 4, size = 8, label = "D", family = 'Times New Roman', fontface = "bold", parse = TRUE) +
   labs(x = "Date",
        y = "% N") +
   theme_bw() +
@@ -92,7 +93,7 @@ figure_1_full
 
 # ggsave(("Figure_1.png"),
 #      path = "/Users/heililowman/Desktop/R_Figures/Kelp_CN",
-#      width = 30,
+#      width = 35,
 #      height = 15,
 #      units = "cm"
 #    )
