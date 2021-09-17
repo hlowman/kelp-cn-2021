@@ -139,6 +139,7 @@ afinal <- lme(logcn ~ temp_C_m*sampling,
               data = cn_sst_rmna)
 
 # Output of the model.
+# Note, summary() function looks at contrasts between singular effects.
 summary(afinal)
 
 # Checking residuals.
@@ -146,6 +147,7 @@ plot(afinal, col=1) # No pattern.
 qqnorm(afinal) # Looks pretty good.
 
 # Final results.
+# Note continued from above... whereas anova() function looks at contrasts across all effects.
 anova(afinal)
 r.squaredGLMM(afinal)
 
