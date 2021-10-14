@@ -67,6 +67,9 @@ sst_full <- sst1 %>%
   rbind(sst2_2) %>%
   rbind(sst3_2)
 
+# Export to working folder for future use
+# write_csv(sst_full, "data_analyses/SBC_sea_surface_temp.csv")
+
 # Create compiled oceanographic indices file
 
 beuti_ed <- beuti %>%
