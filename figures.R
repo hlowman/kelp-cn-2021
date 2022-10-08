@@ -277,4 +277,39 @@ figure_3_full
 #      units = "cm"
 #    )
 
+# Additional figure for job application materials.
+
+# top panel - seasonal trend
+figure_2.2 <- ggplot(cn_fac, aes(x = Month, y = cn)) + 
+  geom_boxplot(aes(fill = Month), alpha = 0.9) +
+  scale_fill_manual(values = lake_pal) +
+  labs(x = "Month",
+       y = "C:N") +
+  ylim(0, 50) +
+  theme_bw() +
+  theme(text=element_text(family="Times New Roman", size = 40)) +
+  theme(legend.position = "none")
+
+# bottom panel - C:N vs. SST
+fig3a.2 <- ggplot(cn_sst_oi , aes(x = temp_C_m, y = logCN)) + 
+  geom_point(size = 3) +
+  labs(x = "Sea Surface Temperature\n(ºCelsius)",
+       y = "log(C:N)") +
+  theme_bw() +
+  theme(text=element_text(family="Times New Roman", size = 40))
+
+# Compile full figure
+figure_app <- figure_2.2 + fig3a.2 +
+  plot_annotation(tag_levels = 'A') +
+  plot_layout(nrow = 2)
+
+figure_app
+
+# ggsave(("Figure_App_Kelp.png"),
+#      path = "/Users/heililowman/Desktop",
+#      width = 30,
+#      height = 30,
+#      units = "cm"
+#    )
+
 # End of script.
